@@ -1,6 +1,7 @@
 import Image from "next/image";
-import { Bot ,Sparkles, MessageSquare, Zap, ArrowRight } from "lucide-react";
+import { Bot, Sparkles, MessageSquare, Zap, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 export default function Home() {
   return (
     <div className="min-h-screen bg-background overflow-hidden">
@@ -20,12 +21,14 @@ export default function Home() {
             <span className="text-xl font-bold gradient-text">NexusAI</span>
           </div>
           <div className="flex items-center gap-4">
-            <Button variant="ghost" >
-              Sign in
-            </Button>
-            <Button variant="gradient" >
-              Get Started
-            </Button>
+            <Link href={"/auth"}>
+              <Button variant="ghost">Sign in</Button>
+            </Link>
+            <Link href={"/auth"}>
+              <Button variant="gradient" className="">
+                Get Started
+              </Button>
+            </Link>
           </div>
         </nav>
       </header>
@@ -45,19 +48,17 @@ export default function Home() {
           </h1>
 
           <p className="text-xl text-muted-foreground mb-12 max-w-2xl mx-auto">
-            Experience the next generation of AI-powered conversations. Smart, intuitive, and designed to understand you.
+            Experience the next generation of AI-powered conversations. Smart,
+            intuitive, and designed to understand you.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button
-              variant="gradient"
-              size="lg"
-              // onClick={() => navigate("/auth")}
-              className="text-base"
-            >
-              Start Chatting Free
-              <ArrowRight className="w-4 h-4" />
-            </Button>
+            <Link href={"/auth"}>
+              <Button variant="gradient" size="lg" className="text-base">
+                Start Chatting Free
+                <ArrowRight className="w-4 h-4" />
+              </Button>
+            </Link>
             <Button
               variant="outline"
               size="lg"
@@ -75,17 +76,20 @@ export default function Home() {
             {
               icon: MessageSquare,
               title: "Natural Conversations",
-              description: "Engage in fluid, context-aware dialogues that feel genuinely human.",
+              description:
+                "Engage in fluid, context-aware dialogues that feel genuinely human.",
             },
             {
               icon: Zap,
               title: "Lightning Fast",
-              description: "Get instant responses powered by state-of-the-art AI technology.",
+              description:
+                "Get instant responses powered by state-of-the-art AI technology.",
             },
             {
               icon: Sparkles,
               title: "Always Learning",
-              description: "Our AI continuously improves to better understand your needs.",
+              description:
+                "Our AI continuously improves to better understand your needs.",
             },
           ].map((feature, index) => (
             <div

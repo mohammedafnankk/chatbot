@@ -67,8 +67,19 @@
     -moz-osx-font-smoothing: grayscale;
   }
 }
+@theme{
+ --color-primary: hsl(var(--primary));
+ --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-accent: hsl(var(--accent));
+}
+
 
 @layer utilities {
+  .bg-gradient-primary {
+    background: var(--gradient-primary);
+  }
   .glass {
     background-color: hsl(var(--card) / 0.8);
     backdrop-filter: blur(12px);
