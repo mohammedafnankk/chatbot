@@ -7,6 +7,8 @@ import { ArrowRight, Bot, Lock, Mail, Sparkles, User } from "lucide-react";
 import { useState } from "react";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
+import { createAuthClient } from "better-auth/react";
+import toast from "react-hot-toast";
 
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
@@ -14,44 +16,62 @@ export default function AuthPage() {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const router = useRouter();
+  const googleAuthClient = createAuthClient();
+
+  const handleGoogleLogin = async () => {
+    try {
+      const data = await googleAuthClient.signIn.social({
+        provider: "google",
+      });
+      if (data.error) {
+        alert(data.error.message);
+        return;
+      }
+      toast.success("Google login successful!");
+      console.log("Google login successful:", data);
+      // router.push("/chat");
+    } catch (error) {
+      console.log("Google login error:", error);
+    }
+  };
+
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-        if(!isLogin){
+      if (!isLogin) {
         // Registration flow
         try {
-            const registerResponse = await authClient.signUp.email({
-        email,
-        password,
-        name,
-      });
-      if (registerResponse.error) {
-        alert(registerResponse.error.message);
-        return;
-      }
-      console.log("Registration successful:", registerResponse);
-    //   router.push("/chat");
+          const registerResponse = await authClient.signUp.email({
+            email,
+            password,
+            name,
+          });
+          if (registerResponse.error) {
+            alert(registerResponse.error.message);
+            return;
+          }
+          console.log("Registration successful:", registerResponse);
+          //   router.push("/chat");
         } catch (error) {
-            console.log("Registration error:", error);
+          console.log("Registration error:", error);
         }
-        }else{
+      } else {
         // Login flow
         try {
-            const loginResponse = await authClient.signIn.email({
-                email,
-                password,
-            })
-            if(loginResponse.error){
-                alert(loginResponse.error.message);
-                return;
-            }
-            console.log("Login successful:", loginResponse);
-            // router.push("/chat");
+          const loginResponse = await authClient.signIn.email({
+            email,
+            password,
+          });
+          if (loginResponse.error) {
+            alert(loginResponse.error.message);
+            return;
+          }
+          console.log("Login successful:", loginResponse);
+          // router.push("/chat");
         } catch (error) {
-            console.log("Registration error:", error);
+          console.log("Registration error:", error);
         }
-        }
-      
+      }
     } catch (error) {
       console.log("Registration error:", error);
     }
@@ -115,6 +135,7 @@ export default function AuthPage() {
 
             {/* Google Login */}
             <Button
+              onClick={handleGoogleLogin}
               variant="google"
               className="w-full mb-6"
               //   onClick={handleGoogleLogin}

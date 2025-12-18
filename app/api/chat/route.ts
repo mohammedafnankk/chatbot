@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
-import { askHFAI } from "@/utils/huggingface.util";
+import { askGROQAI } from "@/utils/groq.util";
 
 export async function POST(req: Request) {
   try {
     const data = await req.json();
-    const response = await askHFAI(data);
+    const response = await askGROQAI(data);
     return NextResponse.json({ success: true, message: response });
   } catch (error) {
     return NextResponse.json({ success: false, error: error }, { status: 400 });
