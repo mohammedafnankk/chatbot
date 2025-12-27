@@ -51,7 +51,21 @@ export default function AuthPage() {
             return;
           }
           console.log("Registration successful:", registerResponse);
-          //   router.push("/chat");
+          try {
+            const loginResponse = await authClient.signIn.email({
+              email,
+              password,
+            });
+            if (loginResponse.error) {
+              alert(loginResponse.error.message);
+              return;
+            }
+            console.log("Login Error", loginResponse);
+              router.push("/chat");
+          } catch (error) {
+            console.log("Login error", error);
+          }
+
         } catch (error) {
           console.log("Registration error:", error);
         }
@@ -67,7 +81,7 @@ export default function AuthPage() {
             return;
           }
           console.log("Login successful:", loginResponse);
-          // router.push("/chat");
+          router.push("/chat");
         } catch (error) {
           console.log("Registration error:", error);
         }
