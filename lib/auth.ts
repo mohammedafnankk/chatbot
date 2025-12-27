@@ -3,9 +3,7 @@ import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { db } from "@/db";
 import * as schema from "@/db/schema";
 
-export const runtime = "nodejs"
 export const auth = betterAuth({
-  basePath: "/api/auth",
   database: drizzleAdapter(db, {
     provider: "pg",
     schema,
@@ -22,6 +20,9 @@ export const auth = betterAuth({
   },
   session: {
     expiresIn: 60 * 60 * 24 * 7, // 7 days
+  },
+  advanced: {
+    useSecureCookies: process.env.NODE_ENV === "production",
   },
   trustedOrigins:["https://nexus-ai-agent.vercel.app"]
 });
