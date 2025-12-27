@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { NextRequest } from "next/server";
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   //read auth token from cookies
   const token = request.cookies.get("better-auth.session_token")?.value;
 

@@ -5,50 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1765016478093,
-      "tag": "0000_sticky_sentry",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1765016947567,
-      "tag": "0001_open_firelord",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1765017742640,
-      "tag": "0002_bored_squadron_sinister",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1765967588378,
-      "tag": "0003_tense_proudstar",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1766041646115,
-      "tag": "0004_amused_darwin",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "7",
-      "when": 1766042869129,
-      "tag": "0005_swift_winter_soldier",
-      "breakpoints": true
-    },
-    {
-      "idx": 6,
-      "version": "7",
-      "when": 1766043028829,
-      "tag": "0006_vengeful_magik",
+      "when": 1766833750006,
+      "tag": "0000_zippy_unicorn",
       "breakpoints": true
     }
   ]
