@@ -1,12 +1,7 @@
 // app/api/auth/[...all]/route.ts
 import { auth } from "@/lib/auth";
+import { toNextJsHandler } from "better-auth/next-js";
 
 export const runtime = "nodejs";
 
-const handler = auth.handler;
-
-export {
-  handler as GET,
-  handler as POST,
-  handler as OPTIONS, //  REQUIRED FOR PRODUCTION
-};
+export const { GET, POST } = toNextJsHandler(auth);

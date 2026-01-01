@@ -2,5 +2,5 @@ import 'dotenv/config';
 import {createAuthClient} from "better-auth/react";
 
 export const authClient = createAuthClient({
-    baseURL:process.env.AUTH_BASE_URL!
+    baseURL:process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
 })
