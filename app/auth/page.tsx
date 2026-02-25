@@ -9,6 +9,11 @@ import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { createAuthClient } from "better-auth/react";
 import toast from "react-hot-toast";
+import { CharacterMorph } from "@/components/ui/character-morph";
+import ShutterText from "@/components/ui/shutter-text";
+import { GooeyText } from "@/components/ui/gooey-text-morphing";
+import { GlitchText } from "@/components/ui/glitch-text";
+import { Magnetic } from "@/components/ui/magnetic";
 
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
@@ -61,7 +66,7 @@ export default function AuthPage() {
               return;
             }
             console.log("Login Error", loginResponse);
-              router.push("/chat");
+            router.push("/chat");
           } catch (error) {
             console.log("Login error", error);
           }
@@ -90,6 +95,8 @@ export default function AuthPage() {
       console.log("Registration error:", error);
     }
   };
+  const texts = ["NexusAI", "Powered by Advanced AI", "Natural Conversations", "Lightning Fast", "Always Learning"]
+  const texts2 = ["Powered", "by", "Advanced", "AI"]
   return (
     <div className="min-h-screen bg-background flex">
       {/* Left side - Branding */}
@@ -103,13 +110,16 @@ export default function AuthPage() {
             <div className="w-12 h-12 rounded-xl bg-primary/20 flex items-center justify-center">
               <Bot className="w-7 h-7 text-primary" />
             </div>
-            <span className="text-2xl font-bold gradient-text">NexusAI</span>
+            <CharacterMorph
+              texts={texts}
+              className="text-xl font-bold text-primary"
+            />
           </div>
 
           <h1 className="text-5xl font-bold text-foreground mb-6 leading-tight">
-            Your Intelligent
+            <ShutterText text="Your Intelligent" trigger="auto" className="text-5xl font-bold text-foreground mb-6 leading-tight" color="text-white" />
             <br />
-            <span className="gradient-text">Conversation Partner</span>
+            <ShutterText text="Conversation Partner" trigger="auto" className="text-5xl text-primary" color="text-primary" />
           </h1>
 
           <p className="text-lg text-muted-foreground mb-8 max-w-md">
@@ -118,9 +128,13 @@ export default function AuthPage() {
           </p>
 
           <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2 text-muted-foreground">
+            <div className="flex items-center gap-2 p-2 rounded-full bg-primary/10 text-primary">
               <Sparkles className="w-5 h-5 text-primary" />
-              <span>Powered by Advanced AI</span>
+              <GlitchText
+                words={texts2}
+                glitchDuration={200}
+                interval={1500}
+              />
             </div>
           </div>
         </div>
@@ -148,11 +162,12 @@ export default function AuthPage() {
             </p>
 
             {/* Google Login */}
+            <Magnetic>
             <Button
               onClick={handleGoogleLogin}
               variant="google"
               className="w-full mb-6"
-              //   onClick={handleGoogleLogin}
+            //   onClick={handleGoogleLogin}
             >
               <svg className="w-5 h-5" viewBox="0 0 24 24">
                 <path
@@ -174,6 +189,7 @@ export default function AuthPage() {
               </svg>
               Continue with Google
             </Button>
+            </Magnetic>
 
             <div className="relative mb-6">
               <div className="absolute inset-0 flex items-center">
@@ -232,11 +248,12 @@ export default function AuthPage() {
                   </button>
                 </div>
               )}
-
-              <Button type="submit" variant="gradient" className="w-full">
-                {isLogin ? "Sign in" : "Create account"}
-                <ArrowRight className="w-4 h-4" />
-              </Button>
+              <Magnetic>
+                <Button type="submit" variant="gradient" className="w-full">
+                  {isLogin ? "Sign in" : "Create account"}
+                  <ArrowRight className="w-4 h-4" />
+                </Button>
+              </Magnetic>
             </form>
 
             <p className="mt-6 text-center text-muted-foreground">

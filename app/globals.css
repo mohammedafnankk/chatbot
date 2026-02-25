@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+@plugin 'tailwindcss-animate';
 @import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
 
 @layer base {
   :root {
@@ -36,10 +40,10 @@
     --gradient-primary: linear-gradient(135deg, hsl(175, 80%, 50%), hsl(200, 80%, 50%));
     --gradient-secondary: linear-gradient(135deg, hsl(220, 20%, 15%), hsl(220, 20%, 20%));
     --gradient-glass: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
-    
+
     --shadow-glow: 0 0 40px hsl(175 80% 50% / 0.15);
     --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.3);
-    
+
     --sidebar-background: 220 20% 8%;
     --sidebar-foreground: 210 40% 98%;
     --sidebar-primary: 175 80% 50%;
@@ -74,7 +78,6 @@
   --color-foreground: hsl(var(--foreground));
   --color-accent: hsl(var(--accent));
 }
-
 
 @layer utilities {
    .animate-spin-custom {
