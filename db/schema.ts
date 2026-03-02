@@ -82,6 +82,7 @@ export const verification = pgTable(
 export const userRelations = relations(user, ({ many }) => ({
   sessions: many(session),
   accounts: many(account),
+  conversations: many(conversation),
 }));
 
 export const sessionRelations = relations(session, ({ one }) => ({
@@ -113,7 +114,9 @@ export const conversation = pgTable("conversation", {
 
 export const message = pgTable("message", {
   id: text("id").primaryKey(),
-  conversationId: text("conversation_id").notNull(),
+  conversationId: text("conversation_id")
+    .notNull()
+    .references(() => conversation.id, { onDelete: "cascade" }),
   content: text("content").notNull(),
   role: text("role").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
@@ -122,3 +125,18 @@ export const message = pgTable("message", {
     .$onUpdate(() => /* @__PURE__ */ new Date())
     .notNull(),
 });
+
+export const conversationRelations = relations(conversation, ({ one, many }) => ({
+  user: one(user, {
+    fields: [conversation.userId],
+    references: [user.id],
+  }),
+  messages: many(message),
+}));
+
+export const messageRelations = relations(message, ({ one }) => ({
+  conversation: one(conversation, {
+    fields: [message.conversationId],
+    references: [conversation.id],
+  }),
+}));

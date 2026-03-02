@@ -2,7 +2,7 @@ import { db } from "@/db";
 import { conversation } from "@/db/schema";
 import { NextResponse } from "next/server";
 import { randomUUID } from "crypto";
-import { eq } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 
 export async function POST(req: Request) {
   try {
@@ -18,7 +18,13 @@ export async function POST(req: Request) {
       userId,
       title,
     });
-    return NextResponse.json({ message: "Conversation created successfully" });
+const [newConversation] = await db
+  .select()
+  .from(conversation)
+  .where(eq(conversation.userId, userId))
+  .orderBy(desc(conversation.createdAt))
+  .limit(1);
+    return NextResponse.json({ message: "Conversation created successfully", data: newConversation });
   } catch (error) {
     return NextResponse.json(
       { success: false, error: `Failed to create conversation ${error}` },

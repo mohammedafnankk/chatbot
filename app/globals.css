@@ -39,7 +39,7 @@
 
     --gradient-primary: linear-gradient(135deg, hsl(175, 80%, 50%), hsl(200, 80%, 50%));
     --gradient-secondary: linear-gradient(135deg, hsl(220, 20%, 15%), hsl(220, 20%, 20%));
-    --gradient-glass: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+    --gradient-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
 
     --shadow-glow: 0 0 40px hsl(175 80% 50% / 0.15);
     --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.3);
@@ -71,21 +71,54 @@
     -moz-osx-font-smoothing: grayscale;
   }
 }
-@theme{
- --color-primary: hsl(var(--primary));
- --color-primary-foreground: hsl(var(--primary-foreground));
+
+/* --- Custom Scrollbar --- */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--primary) / 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--primary));
+  border-radius: 10px;
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--primary) / 0.8);
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--primary)) hsl(var(--primary) / 0.1);
+}
+
+
+
+
+@theme {
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
   --color-accent: hsl(var(--accent));
 }
 
 @layer utilities {
-   .animate-spin-custom {
+  .animate-spin-custom {
     animation: rotate 0.75s linear infinite;
   }
+
   .bg-gradient-primary {
     background: var(--gradient-primary);
   }
+
   .glass {
     background-color: hsl(var(--card) / 0.8);
     backdrop-filter: blur(12px);
@@ -127,7 +160,8 @@
   .animate-pulse-glow {
     animation: pulseGlow 2s ease-in-out infinite;
   }
-   .loader::before {
+
+  .loader::before {
     content: '';
     position: absolute;
     width: 20px;
@@ -178,33 +212,50 @@
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slideUp {
-  from { 
-    opacity: 0; 
-    transform: translateY(20px); 
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
-  to { 
-    opacity: 1; 
-    transform: translateY(0); 
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
 @keyframes pulseGlow {
-  0%, 100% { 
+
+  0%,
+  100% {
     box-shadow: 0 0 20px hsl(175 80% 50% / 0.2);
   }
-  50% { 
+
+  50% {
     box-shadow: 0 0 40px hsl(175 80% 50% / 0.4);
   }
 }
 
 @keyframes typing {
-  0%, 60%, 100% { transform: translateY(0); }
-  30% { transform: translateY(-4px); }
+
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+  }
+
+  30% {
+    transform: translateY(-4px);
+  }
 }
 
 .typing-dot {

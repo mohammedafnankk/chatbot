@@ -6,9 +6,10 @@ import { Magnetic } from "@/components/ui/magnetic";
 import ShutterText from "@/components/ui/shutter-text";
 import { CharacterMorph } from "@/components/ui/character-morph";
 import { TypewriterText } from "@/components/ui/typewritter-text";
+import { GlitchText } from "@/components/ui/glitch-text";
 export default function Home() {
   const texts = ["NexusAI","Powered by Advanced AI","Natural Conversations","Lightning Fast","Always Learning"]
-  const texts2 = ["Powered", "by", "Advanced", "AI"]
+  const texts2 = ["Powered by Advanced AI"]
   return (
     <div className="min-h-screen bg-background overflow-hidden">
       {/* Background effects */}
@@ -51,7 +52,7 @@ export default function Home() {
         <div className="max-w-4xl mx-auto text-center animate-fade-in">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-8">
             <Sparkles className="w-4 h-4" />
-            <TypewriterText
+            <GlitchText
             words={texts2}
             className="text-sm font-medium"
             />

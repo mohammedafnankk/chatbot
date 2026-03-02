@@ -4,9 +4,13 @@ import ChatInput from "@/components/chat/ChatInput";
 import ChatMessage from "@/components/chat/ChatMessage";
 import ChatSidebar from "@/components/chat/ChatSidebar";
 import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
-
+import { authClient } from "@/lib/auth-client";
+import axios from "axios";
+import { motion } from "framer-motion";
+import { Bot, Menu, Sparkles, X } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useEffect, useRef, useState, useCallback } from "react";
+import toast from "react-hot-toast";
 
 interface Message {
   id: string;
@@ -22,41 +26,48 @@ interface Conversation {
   messages: Message[];
 }
 
-const mockConversations: Conversation[] = [
-  {
-    id: "1",
-    title: "React best practices",
-    lastMessage: "Here are some key patterns...",
-    timestamp: "2 hours ago",
-    messages: [
-      { id: "1", role: "user", content: "What are the best practices for React?" },
-      { id: "2", role: "assistant", content: "Below is a complete, step‑by‑step guide to spin up a brand‑new **React** project using **Vite** (the fast, modern build tool).  \nThe instructions cover the most common scenarios – plain JavaScript, TypeScript, and a few handy extras – so you can pick the one that fits your workflow.\n\n---\n\n## 1️⃣ Prerequisites\n\n| What you need | Why |\n|---------------|-----|\n| **Node.js** ≥ 14 (≥ 18 recommended) | Vite runs on Node and bundles your code. |\n| **npm** (bundled with Node) **or** **Yarn** / **pnpm** | Package manager for installing dependencies. |\n| **Git** (optional) | For version control and easy `git init`. |\n\nVerify your installations:\n\n```bash\nnode -v   # e.g. v20.12.0\nnpm -v    # e.g. 10.5.0\n```\n\n---\n\n## 2️⃣ Create the project\n\nVite ships with a **project scaffolding CLI** (`create-vite`).  \nRun one of the commands below depending on the package manager you prefer.\n\n| Package manager | Command |\n|-----------------|---------|\n| npm | `npm create vite@latest` |\n| Yarn | `yarn create vite` |\n| pnpm | `pnpm create vite` |\n\n### 2.1 Interactive wizard (npm example)\n\n```bash\nnpm create vite@latest\n```\n\nYou’ll be prompted for:\n\n1. **Project name** – e.g. `my-react-app`.  \n2. **Framework** – select **React**.  \n3. **Variant** – choose **JavaScript** or **TypeScript** (we’ll show both).  \n\nAfter answering, Vite will generate a folder with everything you need.\n\n> **Tip:** If you already know the answers you can skip the prompts by passing them as arguments:\n\n```bash\n# JavaScript\nnpm create vite@latest my-react-app -- --template react\n\n# TypeScript\nnpm create vite@latest my-react-app -- --template react-ts\n```\n\n> The double‑dash (`--`) tells npm that the following flags belong to the `create-vite` script, not to npm itself.\n\n---\n\n## 3️⃣ Install dependencies\n\nMove into the new folder and install the generated `package.json` dependencies:\n\n```bash\ncd my-react-app\nnpm install   # or `yarn` / `pnpm install`\n```\n\n---\n\n## 4️⃣ Project structure (what you just got)\n\n```\nmy-react-app/\n├─ public/                 # static assets (favicon, robots.txt, etc.)\n│   └─ vite.svg\n├─ src/\n│   ├─ assets/             # images, fonts, …\n│   ├─ App.jsx            # root component (App.tsx if TS)\n│   ├─ main.jsx           # entry point – mounts <App />\n│   └─ index.css          # global styles\n├─ .gitignore\n├─ index.html             # Vite injects script tags here\n├─ vite.config.{js,ts}    # Vite config (mostly defaults)\n└─ package.json\n```\n\n---\n\n## 5️⃣ Run the development server\n\n```bash\nnpm run dev   # or `yarn dev` / `pnpm dev`\n```\n\nYou should see something like:\n\n```\n  VITE v5.2.0  ready in 350 ms\n\n  ➜  Local:   http://localhost:5173/\n  ➜  Network: use --host to expose\n```\n\nOpen the URL in your browser – you’ll see the default Vite + React starter page.\n\n---\n\n## 6️⃣ Building for production\n\nWhen you’re ready to ship:\n\n```bash\nnpm run build   # creates a `dist/` folder\n```\n\n- Vite bundles your code with **esbuild** (JS/TS) and **Rollup** (CSS, assets).  \n- The output in `dist/` is fully static and can be served by any static host (Netlify, Vercel, GitHub Pages, Nginx, etc.).\n\nTo preview the built site locally:\n\n```bash\nnpm run preview\n```\n\n---\n\n## 7️⃣ (Optional) Add TypeScript to an existing JavaScript Vite project\n\nIf you started with the plain `react` template but later decide to switch to TypeScript:\n\n```bash\n# 1. Install TS & type defs\nnpm i -D typescript @types/react @types/react-dom\n\n# 2. Rename files\nmv src/main.jsx src/main.tsx\nmv src/App.jsx   src/App.tsx\n\n# 3. Create a minimal tsconfig (Vite can generate one automatically)\nnpx tsc --init --pretty --jsx react-jsx\n```\n\nVite will automatically detect the `tsconfig.json` and start using TypeScript on the next `npm run dev`.\n\n---\n\n## 8️⃣ Common additions you’ll likely need\n\n| Feature | Install command | Quick usage |\n|---------|----------------|-------------|\n| **React Router** (v6) | `npm i react-router-dom` | ```jsx import { BrowserRouter, Routes, Route } from \"react-router-dom\"; <BrowserRouter>…</BrowserRouter>``` |\n| **State management** (Redux Toolkit) | `npm i @reduxjs/toolkit react-redux` | ```js import { configureStore } from \"@reduxjs/toolkit\";``` |\n| **CSS Modules** | No extra install; just name files `Component.module.css` | ```import styles from \"./Button.module.css\";``` |\n| **Sass/SCSS** | `npm i -D sass` | ```import \"./styles.scss\";``` |\n| **ESLint + Prettier** | `npm i -D eslint prettier eslint-plugin-react eslint-config-prettier eslint-plugin-prettier` | Follow Vite’s **eslint-plugin-react** config or use `npm init @eslint/config`. |\n| **Testing** (Vitest + React Testing Library) | `npm i -D vitest @testing-library/react @testing-library/jest-dom @testing-library/user-event` | Add `vite.config.ts` → `test: { globals: true, environment: \"jsdom\" }` and run `npm run test`. |\n\n> **Tip:** Vite already ships a `vite.config.js` that works out‑of‑the‑box. Most of the time you won’t need to touch it unless you want custom aliases, proxying, or extra plugins.\n\n---\n\n## 9️⃣ Adding a custom path alias (e.g., `@/components`)\n\nEdit `vite.config.{js,ts}`:\n\n```js\nimport { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nimport { resolve } from \"node:path\";\n\nexport default defineConfig({\n  plugins: [react()],\n  resolve: {\n    alias: {\n      \"@\": resolve(__dirname, \"src\"),\n    },\n  },\n});\n```\n\nNow you can import like:\n\n```tsx\nimport Button from \"@/components/Button\";\n```\n\nIf you’re using TypeScript, add the same alias to `tsconfig.json`:\n\n```json\n{\n  \"compilerOptions\": {\n    \"baseUrl\": \".\",\n    \"paths\": {\n      \"@/*\": [\"src/*\"]\n    }\n  }\n}\n```\n\n---\n\n## 10️⃣ Deploying a Vite‑React app\n\n| Platform | Steps |\n|----------|-------|\n| **Netlify** | 1️⃣ Connect repo → 2️⃣ Set *Build command*: `npm run build`  <br> *Publish directory*: `dist` |\n| **Vercel** | 1️⃣ `vercel` CLI or UI → 2️⃣ Build command `npm run build` <br> Output folder `dist` |\n| **GitHub Pages** | 1️⃣ Add `homepage` field in `package.json`: `\"homepage\": \"https://<user>.github.io/<repo>\"` <br> 2️⃣ Run `npm run build` <br> 3️⃣ Push `dist/` to `gh-pages` branch (or use the `gh-pages` npm package). |\n| **Static host (Nginx, Apache, etc.)** | Serve the `dist/` folder as a static site. Remember to fallback to `index.html` for client‑side routing (e.g., `try_files $uri $uri/ /index.html;` in Nginx). |\n\n---\n\n## 11️⃣ Full “starter” script (copy‑paste)\n\nIf you want a one‑liner that creates a **React + TypeScript + ESLint + Prettier** starter, run:\n\n```bash\n# 1️⃣ Scaffold\nnpm create vite@latest my-react-app -- --template react-ts\n\n# 2️⃣ Move in & install core + dev tools\ncd my-react-app\nnpm install\n\n# 3️⃣ Add linting & formatting\nnpm i -D eslint prettier eslint-plugin-react eslint-config-prettier eslint-plugin-prettier\n\n# 4️⃣ Create a basic .eslintrc.cjs\ncat <<'EOF' > .eslintrc.cjs\nmodule.exports = {\n  env: {\n    browser: true,\n    es2021: true,\n  },\n  extends: [\n    \"eslint:recommended\",\n    \"plugin:react/recommended\",\n    \"plugin:react-hooks/recommended\",\n    \"prettier\",\n  ],\n  parserOptions: {\n    ecmaFeatures: { jsx: true },\n    ecmaVersion: \"latest\",\n    sourceType: \"module\",\n  },\n  plugins: [\"react\", \"react-hooks\", \"prettier\"],\n  rules: {\n    \"prettier/prettier\": \"error\",\n    \"react/react-in-jsx-scope\": \"off\", // not needed with React 17+\n  },\n  settings: {\n    react: { version: \"detect\" },\n  },\n};\nEOF\n\n# 5️⃣ Add a Prettier config (optional)\ncat <<'EOF' > .prettierrc\n{\n  \"singleQuote\": true,\n  \"trailingComma\": \"es5\",\n  \"printWidth\": 80,\n  \"tabWidth\": 2,\n  \"semi\": true\n}\nEOF\n\n# 6️⃣ Add npm scripts (optional, but convenient)\nnpx json -I -f package.json -e 'this.scripts.lint=\"eslint src --ext .js,.jsx,.ts,.tsx\"', \\\n                               -e 'this.scripts.format=\"prettier --write src\"', \\\n                               -e 'this.scripts.check=\"npm run lint && npm run format\"'\n\n# 7️⃣ Done! Run dev server\nnpm run dev\n```\n\n*(The `json` CLI used above is just a tiny helper to edit `package.json`; you can edit it manually if you prefer.)*\n\n---\n\n## ✅ TL;DR Checklist\n\n1. **Install Node** (≥ 18).  \n2. Run `npm create vite@latest my-react-app -- --template react` (or `react-ts`).  \n3. `cd my-react-app && npm install`.  \n4. `npm run dev` → develop at `http://localhost:5173`.  \n5. `npm run build` → production files in `dist/`.  \n6. Deploy `dist/` to any static host (Netlify, Vercel, etc.).  \n\nYou now have a blazing‑fast React development environment powered by Vite! 🚀  \n\nHappy coding! If you run into any hiccups, just ask – I’m here to help." },
-    ],
-  },
-  {
-    id: "2",
-    title: "Python vs JavaScript",
-    lastMessage: "Both languages have their strengths...",
-    timestamp: "Yesterday",
-    messages: [],
-  },
-  {
-    id: "3",
-    title: "Database design tips",
-    lastMessage: "For optimal database design...",
-    timestamp: "2 days ago",
-    messages: [],
-  },
-];
-
 export default function Chat() {
-      const [conversations, setConversations] = useState<Conversation[]>(mockConversations);
-  const [activeConversation, setActiveConversation] = useState<string | null>("1");
-  const [messages, setMessages] = useState<Message[]>(mockConversations[0].messages);
+  const [conversations, setConversations] = useState<Conversation[]>([]);
+  const [activeConversation, setActiveConversation] = useState<string | null>(null);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [isTyping, setIsTyping] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
+  // Auth session
+  const { data: session, isPending } = authClient.useSession();
+
+  // Redirect to auth if not logged in
+  useEffect(() => {
+    if (!isPending && !session?.user) {
+      router.push("/auth");
+    }
+  }, [session, isPending, router]);
+
+  // Load conversations on mount
+  const loadConversations = useCallback(async () => {
+    if (!session?.user?.id) return;
+    try {
+      const res = await axios.get(`/api/conversation?userId=${session.user.id}`);
+      if (res.data.success) {
+        const convs: Conversation[] = res.data.data.conversations.map((c: any) => ({
+          id: c.id,
+          title: c.title,
+          lastMessage: "",
+          timestamp: c.updatedAt,
+          messages: [],
+        }));
+        setConversations(convs);
+      }
+    } catch (err) {
+      console.error("Failed to load conversations:", err);
+    }
+  }, [session?.user?.id]);
+
+  useEffect(() => {
+    loadConversations();
+  }, [loadConversations]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -66,34 +77,109 @@ export default function Chat() {
     scrollToBottom();
   }, [messages, isTyping]);
 
-  const handleSend = (content: string) => {
+  // Load messages for a conversation
+  const loadMessages = async (conversationId: string) => {
+    try {
+      const res = await axios.get(`/api/message?conversationId=${conversationId}`);
+      if (res.data.success) {
+        const msgs: Message[] = res.data.data.map((m: any) => ({
+          id: m.id,
+          role: m.role as "user" | "assistant",
+          content: m.content,
+        }));
+        setMessages(msgs);
+      }
+    } catch (err) {
+      console.error("Failed to load messages:", err);
+    }
+  };
+
+  const handleSend = async (content: string) => {
+    if (!session?.user?.id) return;
+
     const userMessage: Message = {
-      id: Date.now().toString(),
+      id: crypto.randomUUID(),
       role: "user",
       content,
     };
     setMessages((prev) => [...prev, userMessage]);
     setIsTyping(true);
 
-    // Simulate AI response
-    setTimeout(() => {
-      const aiMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        role: "assistant",
-        content: getAIResponse(content),
-      };
-      setMessages((prev) => [...prev, aiMessage]);
-      setIsTyping(false);
-    }, 1500);
-  };
+    try {
+      let convId = activeConversation;
 
-  const getAIResponse = (userMessage: string): string => {
-    const responses = [
-      "That's a great question! Let me break it down for you...\n\nBased on my analysis, here are the key points to consider:\n\n1. **Understanding the context** - First, we need to establish the foundation\n\n2. **Implementation details** - Here's how you can approach this practically\n\n3. **Best practices** - Following industry standards will help ensure success",
-      "I'd be happy to help you with that! Here's my perspective:\n\nThe approach you're taking is on the right track. Consider these additional factors:\n\n• Start with a clear objective\n• Break down complex problems into smaller parts\n• Test iteratively and gather feedback",
-      "Interesting question! Let me share some insights:\n\nFrom my understanding, this involves several interconnected concepts. The key is to find the right balance between simplicity and functionality.\n\nWould you like me to elaborate on any specific aspect?",
-    ];
-    return responses[Math.floor(Math.random() * responses.length)];
+      // Create new conversation if none is active
+      if (!convId) {
+        const title = content.length > 40 ? content.substring(0, 40) + "..." : content;
+        const convRes = await axios.post("/api/conversation", {
+          userId: session.user.id,
+          title,
+        });
+        convId = convRes.data.data.id;
+        setActiveConversation(convId);
+        setConversations((prev) => [
+          {
+            id: convId!,
+            title,
+            lastMessage: content,
+            timestamp: new Date().toISOString(),
+            messages: [],
+          },
+          ...prev,
+        ]);
+      }
+
+      // Save user message to DB
+      await axios.post("/api/message", {
+        conversationId: convId,
+        content,
+        role: "user",
+      });
+
+      // Build conversation history for AI
+      const history = [...messages, userMessage].map((m) => ({
+        role: m.role,
+        content: m.content,
+      }));
+
+      // Get AI response
+      const chatRes = await axios.post("/api/chat", { messages: history });
+      const aiContent = chatRes.data.message || "Sorry, I couldn't generate a response.";
+
+      const aiMessage: Message = {
+        id: crypto.randomUUID(),
+        role: "assistant",
+        content: aiContent,
+      };
+
+      // Save AI message to DB
+      await axios.post("/api/message", {
+        conversationId: convId,
+        content: aiContent,
+        role: "assistant",
+      });
+
+      setMessages((prev) => [...prev, aiMessage]);
+
+      // Update conversation's lastMessage in sidebar
+      setConversations((prev) =>
+        prev.map((c) =>
+          c.id === convId
+            ? { ...c, lastMessage: aiContent, timestamp: new Date().toISOString() }
+            : c
+        )
+      );
+    } catch (err) {
+      console.error("Failed to send message:", err);
+      const errorMessage: Message = {
+        id: crypto.randomUUID(),
+        role: "assistant",
+        content: "Sorry, something went wrong. Please try again.",
+      };
+      setMessages((prev) => [...prev, errorMessage]);
+    } finally {
+      setIsTyping(false);
+    }
   };
 
   const handleNewChat = () => {
@@ -102,16 +188,69 @@ export default function Chat() {
     setSidebarOpen(false);
   };
 
-  const handleSelectConversation = (id: string) => {
-    const conv = conversations.find((c) => c.id === id);
-    if (conv) {
-      setMessages(conv.messages);
-      setActiveConversation(id);
-      setSidebarOpen(false);
+  const handleSelectConversation = async (id: string) => {
+    setActiveConversation(id);
+    setSidebarOpen(false);
+    await loadMessages(id);
+  };
+
+  const handleDeleteConversation = async (id: string) => {
+    try {
+      await axios.delete(`/api/conversation?conversationId=${id}`);
+      setConversations((prev) => prev.filter((c) => c.id !== id));
+      if (activeConversation === id) {
+        setMessages([]);
+        setActiveConversation(null);
+      }
+    } catch (err) {
+      console.error("Failed to delete conversation:", err);
     }
   };
 
+  const handleSignOut = async () => {
+    try {
+      await authClient.signOut();
+      router.push("/auth");
+      toast.success("Logout successful!");
+    } catch (error) {
+      console.error("Logout failed:", error);
+      toast.error("Logoout failed");
+    }
+  };
+
+
+  if (isPending) {
     return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-background relative overflow-hidden">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-primary/5 rounded-full blur-[100px]" />
+
+        <motion.div
+          animate={{
+            y: [0, -8, 0],
+          }}
+          transition={{
+            duration: 2,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+          className="w-16 h-16 rounded-xl bg-primary/20 flex items-center justify-center border border-primary/30 mb-4 z-10"
+        >
+          <Bot className="w-8 h-8 text-primary" />
+        </motion.div>
+
+        <motion.div
+          animate={{ opacity: [0.4, 1, 0.4] }}
+          transition={{ duration: 2, repeat: Infinity }}
+          className="text-sm font-medium tracking-wide text-muted-foreground z-10"
+        >
+          Securing Connection...
+        </motion.div>
+      </div>
+    );
+  }
+
+
+  return (
     <div className="h-screen flex bg-background overflow-hidden">
       {/* Mobile sidebar overlay */}
       {sidebarOpen && (
@@ -123,15 +262,16 @@ export default function Chat() {
 
       {/* Sidebar */}
       <div
-        className={`fixed lg:relative inset-y-0 left-0 z-50 transform ${
-          sidebarOpen ? "translate-x-0" : "-translate-x-full"
-        } lg:translate-x-0 transition-transform duration-200`}
+        className={`fixed lg:relative inset-y-0 left-0 z-50 transform ${sidebarOpen ? "translate-x-0" : "-translate-x-full"
+          } lg:translate-x-0 transition-transform duration-200`}
       >
         <ChatSidebar
           conversations={conversations}
           activeId={activeConversation}
           onSelectConversation={handleSelectConversation}
           onNewChat={handleNewChat}
+          onDeleteConversation={handleDeleteConversation}
+          onSignOut={handleSignOut}
         />
       </div>
 
@@ -160,8 +300,8 @@ export default function Chat() {
           <div className="max-w-3xl mx-auto space-y-6">
             {messages.length === 0 ? (
               <div className="flex flex-col items-center justify-center h-full min-h-[400px] text-center">
-                <div className="w-16 h-16 rounded-2xl bg-primary/20 flex items-center justify-center mb-6">
-                  <span className="text-3xl">✨</span>
+                <div className="w-16 h-16 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mb-6 px-2 py-2">
+                  <Sparkles className="w-12 h-12" />
                 </div>
                 <h2 className="text-2xl font-semibold text-foreground mb-3">
                   How can I help you today?
