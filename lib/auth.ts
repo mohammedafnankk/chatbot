@@ -32,7 +32,7 @@ export const auth = betterAuth({
 
   trustedOrigins: [
     "https://nexus-snowy-ten.vercel.app",
-    "nexus-snowy-ten.vercel.app"
+    "http://localhost:3000"
   ],
 
   // Critical for Vercel
@@ -41,7 +41,7 @@ export const auth = betterAuth({
     crossSubDomainCookies: {
       enabled: false,
     },
-    // Adding this to help with "Method Not Allowed" (often CORS/Origin issues)
-    generateId: () => Math.random().toString(36).substring(2, 15),
+    // Required for Vercel proxying
+    trustHost: true,
   },
 });
