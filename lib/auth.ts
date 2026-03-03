@@ -5,7 +5,7 @@ import { db } from "@/db";
 import * as schema from "@/db/schema";
 
 export const auth = betterAuth({
-  baseURL: process.env.BETTER_AUTH_URL!, // Required
+  baseURL: process.env.BETTER_AUTH_URL || process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
   basePath: "/api/auth",
   secret: process.env.BETTER_AUTH_SECRET,
 
@@ -30,7 +30,10 @@ export const auth = betterAuth({
     expiresIn: 60 * 60 * 24 * 7,
   },
 
-  trustedOrigins: ["https://nexus-ai-agent.vercel.app"],
+  trustedOrigins: [
+    "https://nexus-snowy-ten.vercel.app",
+    "nexus-snowy-ten.vercel.app"
+  ],
 
   // Critical for Vercel
   advanced: {
@@ -38,5 +41,7 @@ export const auth = betterAuth({
     crossSubDomainCookies: {
       enabled: false,
     },
+    // Adding this to help with "Method Not Allowed" (often CORS/Origin issues)
+    generateId: () => Math.random().toString(36).substring(2, 15),
   },
 });
