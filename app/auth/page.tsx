@@ -5,13 +5,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ArrowRight, Bot, Lock, Mail, Sparkles, User } from "lucide-react";
 import { useState } from "react";
-import { authClient } from "@/lib/auth-client";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { CharacterMorph } from "@/components/ui/character-morph";
 import ShutterText from "@/components/ui/shutter-text";
 import { GlitchText } from "@/components/ui/glitch-text";
 import { Magnetic } from "@/components/ui/magnetic";
+import axios from "axios";
 
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
@@ -19,28 +20,15 @@ export default function AuthPage() {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const router = useRouter();
+
   const handleGoogleLogin = async () => {
     try {
-      const { data, error } = await authClient.signIn.social({
-        provider: "google",
-        callbackURL: "/chat",
-        errorCallbackURL: "/auth",
-      });
-
-      if (error) {
-        toast.error(error.message || "Google login failed");
-        return;
-      }
-
-      // If sign-in returns success but hasn't redirected yet, manually navigate
-      router.push("/chat");
+      await signIn("google", { callbackUrl: "/chat" });
     } catch (error) {
       console.log("Google login error:", error);
       toast.error("Google login failed");
     }
   };
-
-
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -48,60 +36,49 @@ export default function AuthPage() {
       if (!isLogin) {
         // Registration flow
         try {
-          const registerResponse = await authClient.signUp.email({
-            email,
-            password,
-            name,
-          });
-          if (registerResponse.error) {
-            toast.error(registerResponse.error.message || "Registration failed");
+          // Manual registration via API (since NextAuth doesn't handle sign-up by default)
+          const res = await axios.post("/api/register", { email, password, name });
+          if (res.data.error) {
+            toast.error(res.data.error || "Registration failed");
             return;
           }
-          console.log("Registration successful:", registerResponse);
-          try {
-            const loginResponse = await authClient.signIn.email({
-              email,
-              password,
-            });
-            if (loginResponse.error) {
-              toast.error(loginResponse.error.message || "Login failed");
-              return;
-            }
-            console.log("Login successful:", loginResponse);
-            toast.success("Login successful!");
-            router.push("/chat");
-          } catch (error) {
-            console.log("Login error", error);
-            toast.error("Login failed");
+
+          const result = await signIn("credentials", {
+            email,
+            password,
+            redirect: false,
+          });
+
+          if (result?.error) {
+            toast.error(result.error || "Login failed");
+            return;
           }
 
-
-        } catch (error) {
+          toast.success("Account created and logged in!");
+          router.push("/chat");
+        } catch (error: any) {
           console.log("Registration error:", error);
-          toast.error("Registration failed");
+          toast.error(error.response?.data?.error || "Registration failed");
         }
       } else {
         // Login flow
-        try {
-          const loginResponse = await authClient.signIn.email({
-            email,
-            password,
-          });
-          if (loginResponse.error) {
-            toast.error(loginResponse.error.message || "Login failed");
-            return;
-          }
-          console.log("Login successful:", loginResponse);
-          toast.success("Login successful!");
-          router.push("/chat");
-        } catch (error) {
-          console.log("Registration error:", error);
-          toast.error("Login failed");
+        const result = await signIn("credentials", {
+          email,
+          password,
+          redirect: false,
+        });
+
+        if (result?.error) {
+          toast.error("Invalid email or password");
+          return;
         }
+
+        toast.success("Login successful!");
+        router.push("/chat");
       }
     } catch (error) {
-      console.log("Registration error:", error);
-      toast.error("Registration failed");
+      console.log("Auth error:", error);
+      toast.error("Authentication failed");
     }
   };
   const texts = ["NexusAI", "Powered by Advanced AI", "Natural Conversations", "Lightning Fast", "Always Learning"]

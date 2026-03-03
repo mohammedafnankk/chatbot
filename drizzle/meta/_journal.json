@@ -8,6 +8,13 @@
       "when": 1766833750006,
       "tag": "0000_zippy_unicorn",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1772535247517,
+      "tag": "0001_empty_shinko_yamashiro",
+      "breakpoints": true
     }
   ]
 }

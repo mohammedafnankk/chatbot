@@ -4,7 +4,7 @@ import ChatInput from "@/components/chat/ChatInput";
 import ChatMessage from "@/components/chat/ChatMessage";
 import ChatSidebar from "@/components/chat/ChatSidebar";
 import { Button } from "@/components/ui/button";
-import { authClient } from "@/lib/auth-client";
+import { useSession, signOut } from "next-auth/react";
 import axios from "axios";
 import { motion } from "framer-motion";
 import { Bot, Menu, Sparkles, X } from "lucide-react";
@@ -35,15 +35,16 @@ export default function Chat() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
-  // Auth session
-  const { data: session, isPending } = authClient.useSession();
+  // NextAuth session
+  const { data: session, status } = useSession();
+  const isPending = status === "loading";
 
-  // Redirect to auth if not logged in
+  // Redirect to auth if not logged in (fallback though middleware should handle this)
   useEffect(() => {
-    if (!isPending && !session?.user) {
+    if (status === "unauthenticated") {
       router.push("/auth");
     }
-  }, [session, isPending, router]);
+  }, [status, router]);
 
   // Load conversations on mount
   const loadConversations = useCallback(async () => {
@@ -66,8 +67,10 @@ export default function Chat() {
   }, [session?.user?.id]);
 
   useEffect(() => {
-    loadConversations();
-  }, [loadConversations]);
+    if (session?.user?.id) {
+      loadConversations();
+    }
+  }, [session?.user?.id, loadConversations]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -209,12 +212,11 @@ export default function Chat() {
 
   const handleSignOut = async () => {
     try {
-      await authClient.signOut();
-      router.push("/auth");
+      await signOut({ callbackUrl: "/auth" });
       toast.success("Logout successful!");
     } catch (error) {
       console.error("Logout failed:", error);
-      toast.error("Logoout failed");
+      toast.error("Logout failed");
     }
   };
 

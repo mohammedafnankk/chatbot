@@ -18,6 +18,8 @@ export const metadata: Metadata = {
   description: "Powered by Advanced AI",
 };
 
+import AuthProvider from "@/components/providers/AuthProvider";
+
 export default function RootLayout({
   children,
 }: {
@@ -28,19 +30,21 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <AuthProvider>
+          {children}
+        </AuthProvider>
         <Toaster
           position="top-center"
           toastOptions={{
             duration: 3000,
-            style:{
+            style: {
               background: "rgba(255, 255, 255, 0.15)",
               color: "#fff",
               backdropFilter: "blur(30px)",
               WebkitBackdropFilter: "blur(30px)",
               border: "1px solid rgba(255, 255, 255, 0.2)",
               boxShadow: "0 8px 32px rgba(0,0,0,0.2)",
-              
+
             }
           }}
         />
