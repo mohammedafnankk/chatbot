@@ -7,8 +7,16 @@ import ShutterText from "@/components/ui/shutter-text";
 import { CharacterMorph } from "@/components/ui/character-morph";
 import { TypewriterText } from "@/components/ui/typewritter-text";
 import { GlitchText } from "@/components/ui/glitch-text";
+import { Navbar } from "@/components/layout/Navbar";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "NexusAI - The Future of Conversations",
+  description: "Experience the next generation of AI-powered conversations. Smart, intuitive, and designed to understand you.",
+};
+
 export default function Home() {
-  const texts = ["NexusAI","Powered by Advanced AI","Natural Conversations","Lightning Fast","Always Learning"]
+  const texts = ["NexusAI", "Powered by Advanced AI", "Natural Conversations", "Lightning Fast", "Always Learning"]
   const texts2 = ["Powered by Advanced AI"]
   return (
     <div className="min-h-screen bg-background overflow-hidden">
@@ -18,34 +26,7 @@ export default function Home() {
         <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-accent/5 rounded-full blur-3xl" />
       </div>
 
-      {/* Header */}
-      <header className="relative z-10 container mx-auto px-6 py-6">
-        <nav className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center">
-              <Bot className="w-6 h-6 text-primary" />
-            </div>
-            <CharacterMorph
-            texts={texts}
-            className="text-xl font-bold text-primary"
-            />
-          </div>
-          <div className="flex items-center gap-4">
-            <Magnetic intensity={1.2}>
-              <Link href={"/auth"}>
-                <Button variant="outline">Sign in</Button>
-              </Link>
-            </Magnetic>
-            <Magnetic intensity={1.2}>
-              <Link href={"/auth"}>
-                <Button variant="gradient" className="">
-                  Get Started
-                </Button>
-              </Link>
-            </Magnetic>
-          </div>
-        </nav>
-      </header>
+      <Navbar />
 
       {/* Hero */}
       <main className="relative z-10 container mx-auto px-6 pt-20 pb-32">
@@ -53,8 +34,8 @@ export default function Home() {
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-8">
             <Sparkles className="w-4 h-4" />
             <GlitchText
-            words={texts2}
-            className="text-sm font-medium"
+              words={texts2}
+              className="text-sm font-medium"
             />
           </div>
 
@@ -63,7 +44,7 @@ export default function Home() {
             <ShutterText text="Your Intelligent" trigger="auto" className="text-5xl md:text-7xl font-bold text-foreground mb-6 leading-tight" color="text-white" />
             <br />
             {/* <span className="gradient-text">Conversation Partner</span> */}
-            <ShutterText  text="Conversation Partner" trigger="auto" className="text-7xl text-primary" color="text-primary" />
+            <ShutterText text="Conversation Partner" trigger="auto" className="text-7xl text-primary" color="text-primary" />
           </h1>
           <p className="text-xl text-muted-foreground mb-12 max-w-2xl mx-auto">
             Experience the next generation of AI-powered conversations. Smart,

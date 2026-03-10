@@ -56,7 +56,7 @@ const GlitchText = React.forwardRef<HTMLSpanElement, GlitchTextProps>(
       <span
         ref={ref}
         className={cn(
-          "inline-block font-mono",
+          "inline-block font-mono select-none",
           isGlitching && "text-primary",
           className,
         )}

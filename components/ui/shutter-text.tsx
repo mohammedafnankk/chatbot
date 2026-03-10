@@ -75,7 +75,7 @@ export default function ShutterText({
       onClick={handleClick}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className={`relative inline-flex flex-wrap items-center justify-center ${className}`}
+      className={`select-none relative inline-flex flex-wrap items-center justify-center ${className}`}
       {...props}
     >
       <AnimatePresence mode="wait">

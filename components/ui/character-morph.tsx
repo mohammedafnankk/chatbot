@@ -38,7 +38,7 @@ const CharacterMorph = React.forwardRef<HTMLDivElement, CharacterMorphProps>(
     return (
       <div
         ref={ref}
-        className={cn("relative inline-flex whitespace-nowrap", className)}
+        className={cn("relative inline-flex whitespace-nowrap select-none", className)}
       >
         <AnimatePresence mode="popLayout">
           {currentText.split("").map((char, i) => (
