@@ -44,7 +44,7 @@ export default function Home() {
             <ShutterText text="Your Intelligent" trigger="auto" className="text-5xl md:text-7xl font-bold text-foreground mb-6 leading-tight" color="text-white" />
             <br />
             {/* <span className="gradient-text">Conversation Partner</span> */}
-            <ShutterText text="Conversation Partner" trigger="auto" className="text-7xl text-primary" color="text-primary" />
+            <ShutterText text="Conversation Partner" trigger="auto" className="md:text-7xl text-5xl text-primary" color="text-primary" />
           </h1>
           <p className="text-xl text-muted-foreground mb-12 max-w-2xl mx-auto">
             Experience the next generation of AI-powered conversations. Smart,
