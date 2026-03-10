@@ -4,12 +4,12 @@ import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowUp,
   BrainCog,
-  FolderCode,
+  // FolderCode,
   Globe,
-  Mic,
-  Paperclip,
+  // Mic,
+  // Paperclip,
   Square,
-  StopCircle,
+  // StopCircle,
   X,
 } from "lucide-react";
 import Image from "next/image";
@@ -302,7 +302,7 @@ interface PromptInputContextType {
 const PromptInputContext = React.createContext<PromptInputContextType>({
   isLoading: false,
   value: "",
-  setValue: () => {},
+  setValue: () => { },
   maxHeight: 240,
   onSubmit: undefined,
   disabled: false,
@@ -396,42 +396,42 @@ const PromptInputTextarea: React.FC<
   placeholder,
   ...props
 }) => {
-  const { value, setValue, maxHeight, onSubmit, disabled } = usePromptInput();
-  const textareaRef = React.useRef<HTMLTextAreaElement>(null);
+    const { value, setValue, maxHeight, onSubmit, disabled } = usePromptInput();
+    const textareaRef = React.useRef<HTMLTextAreaElement>(null);
 
-  React.useEffect(() => {
-    if (disableAutosize || !textareaRef.current) return;
-    textareaRef.current.style.height = "auto";
-    textareaRef.current.style.height =
-      typeof maxHeight === "number"
-        ? `${Math.min(textareaRef.current.scrollHeight, maxHeight)}px`
-        : `min(${textareaRef.current.scrollHeight}px, ${maxHeight})`;
-  }, [maxHeight, disableAutosize]);
+    React.useEffect(() => {
+      if (disableAutosize || !textareaRef.current) return;
+      textareaRef.current.style.height = "auto";
+      textareaRef.current.style.height =
+        typeof maxHeight === "number"
+          ? `${Math.min(textareaRef.current.scrollHeight, maxHeight)}px`
+          : `min(${textareaRef.current.scrollHeight}px, ${maxHeight})`;
+    }, [maxHeight, disableAutosize]);
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      onSubmit?.();
-    }
-    onKeyDown?.(e);
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        onSubmit?.();
+      }
+      onKeyDown?.(e);
+    };
+
+    return (
+      <Textarea
+        ref={textareaRef}
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        onKeyDown={handleKeyDown}
+        className={cn("text-base", className)}
+        disabled={disabled}
+        placeholder={placeholder}
+        {...props}
+      />
+    );
   };
 
-  return (
-    <Textarea
-      ref={textareaRef}
-      value={value}
-      onChange={(e) => setValue(e.target.value)}
-      onKeyDown={handleKeyDown}
-      className={cn("text-base", className)}
-      disabled={disabled}
-      placeholder={placeholder}
-      {...props}
-    />
-  );
-};
-
 interface PromptInputActionsProps
-  extends React.HTMLAttributes<HTMLDivElement> {}
+  extends React.HTMLAttributes<HTMLDivElement> { }
 const PromptInputActions: React.FC<PromptInputActionsProps> = ({
   children,
   className,
@@ -491,7 +491,7 @@ interface PromptInputBoxProps {
 export const PromptInputBox = React.forwardRef(
   (props: PromptInputBoxProps, ref: React.Ref<HTMLDivElement>) => {
     const {
-      onSend = () => {},
+      onSend = () => { },
       isLoading = false,
       placeholder = "Type your message here...",
       className,
@@ -611,6 +611,7 @@ export const PromptInputBox = React.forwardRef(
         setInput("");
         setFiles([]);
         setFilePreviews({});
+        console.log(messagePrefix, "lll")
       }
     };
 
@@ -724,7 +725,7 @@ export const PromptInputBox = React.forwardRef(
                 isRecording ? "invisible h-0 opacity-0" : "visible opacity-100",
               )}
             >
-              <PromptInputAction tooltip="Upload image">
+              {/* <PromptInputAction tooltip="Upload image">
                 <button
                   onClick={() => uploadInputRef.current?.click()}
                   className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full text-[#9CA3AF] transition-colors hover:bg-gray-600/30 hover:text-[#D1D5DB]"
@@ -745,7 +746,7 @@ export const PromptInputBox = React.forwardRef(
                     accept="image/*"
                   />
                 </button>
-              </PromptInputAction>
+              </PromptInputAction> */}
 
               <div className="flex items-center">
                 <button
@@ -858,9 +859,9 @@ export const PromptInputBox = React.forwardRef(
                   </AnimatePresence>
                 </button>
 
-                <CustomDivider />
+                {/* <CustomDivider /> */}
 
-                <button
+                {/* <button
                   type="button"
                   onClick={handleCanvasToggle}
                   className={cn(
@@ -912,7 +913,7 @@ export const PromptInputBox = React.forwardRef(
                       </motion.span>
                     )}
                   </AnimatePresence>
-                </button>
+                </button> */}
               </div>
             </div>
 
@@ -920,11 +921,9 @@ export const PromptInputBox = React.forwardRef(
               tooltip={
                 isLoading
                   ? "Stop generation"
-                  : isRecording
-                    ? "Stop recording"
-                    : hasContent
-                      ? "Send message"
-                      : "Voice message"
+                  : hasContent
+                    ? "Send message"
+                    : "Type a message"
               }
             >
               <Button
@@ -936,24 +935,19 @@ export const PromptInputBox = React.forwardRef(
                     ? "bg-transparent text-red-500 hover:bg-gray-600/30 hover:text-red-400"
                     : hasContent
                       ? "bg-white text-[#1F2023] hover:bg-white/80"
-                      : "bg-transparent text-[#9CA3AF] hover:bg-gray-600/30 hover:text-[#D1D5DB]",
+                      : "hidden bg-transparent text-[#9CA3AF] hover:bg-gray-600/30 hover:text-[#D1D5DB]",
                 )}
                 onClick={() => {
-                  if (isRecording) setIsRecording(false);
-                  else if (hasContent) handleSubmit();
-                  else setIsRecording(true);
+                  if (hasContent) handleSubmit();
+                  // Voice recording is disabled
                 }}
-                disabled={isLoading && !hasContent}
+                disabled={isLoading || !hasContent}
               >
                 {isLoading ? (
                   <Square className="h-4 w-4 animate-pulse fill-[#1F2023]" />
-                ) : isRecording ? (
-                  <StopCircle className="h-5 w-5 text-red-500" />
                 ) : hasContent ? (
                   <ArrowUp className="h-4 w-4 text-[#1F2023]" />
-                ) : (
-                  <Mic className="h-5 w-5 text-[#1F2023] transition-colors" />
-                )}
+                ) : <ArrowUp className="h-4 w-4 text-[#1F2023]" />}
               </Button>
             </PromptInputAction>
           </PromptInputActions>
