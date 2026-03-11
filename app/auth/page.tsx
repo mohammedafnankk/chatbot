@@ -13,6 +13,7 @@ import ShutterText from "@/components/ui/shutter-text";
 import { GlitchText } from "@/components/ui/glitch-text";
 import { Magnetic } from "@/components/ui/magnetic";
 import axios from "axios";
+import { Footer } from "@/components/layout/Footer";
 
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
@@ -84,7 +85,8 @@ export default function AuthPage() {
   const texts = ["NexusAI", "Powered by Advanced AI", "Natural Conversations", "Lightning Fast", "Always Learning"]
   const texts2 = ["Powered by Advanced AI"]
   return (
-    <div className="min-h-screen bg-background flex">
+    <main className="min-h-screen">
+    <div className=" bg-background flex">
       {/* Left side - Branding */}
       <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-background to-background" />
@@ -254,5 +256,7 @@ export default function AuthPage() {
         </div>
       </div>
     </div>
+      <Footer />
+    </main>
   );
 }

@@ -65,7 +65,7 @@ export function ContactForm() {
 
     return (
         <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-4 max-sm:grid-cols-1">
                 <div className="space-y-2">
                     <label
                         htmlFor="firstName"

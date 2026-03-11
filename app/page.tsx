@@ -9,6 +9,7 @@ import { TypewriterText } from "@/components/ui/typewritter-text";
 import { GlitchText } from "@/components/ui/glitch-text";
 import { Navbar } from "@/components/layout/Navbar";
 import { Metadata } from "next";
+import { Footer } from "@/components/layout/Footer";
 
 export const metadata: Metadata = {
   title: "NexusAI - The Future of Conversations",
@@ -74,7 +75,7 @@ export default function Home() {
         </div>
 
         {/* Features */}
-        <div className="grid md:grid-cols-3 gap-6 mt-32 max-w-5xl mx-auto">
+        <div className="grid md:grid-cols-3 gap-6 mt-32 max-sm:mt-10 max-w-5xl mx-auto">
           {[
             {
               icon: MessageSquare,
@@ -116,6 +117,7 @@ export default function Home() {
           ))}
         </div>
       </main>
+        <Footer />
     </div>
   );
 }

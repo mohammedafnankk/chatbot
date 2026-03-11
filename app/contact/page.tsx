@@ -4,6 +4,7 @@ import { GlitchText } from "@/components/ui/glitch-text";
 import ShutterText from "@/components/ui/shutter-text";
 import { ContactForm } from "@/components/contact/ContactForm";
 import { Metadata } from "next";
+import { Footer } from "@/components/layout/Footer";
 
 export const metadata: Metadata = {
     title: "Contact | NexusAI",
@@ -90,6 +91,7 @@ export default function Contact() {
                     </div>
                 </div>
             </main>
+            <Footer />
         </div>
     );
 }

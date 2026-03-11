@@ -6,6 +6,7 @@ import ShutterText from "@/components/ui/shutter-text";
 import { GlitchText } from "@/components/ui/glitch-text";
 import Link from "next/link";
 import { Metadata } from "next";
+import { Footer } from "@/components/layout/Footer";
 
 export const metadata: Metadata = {
     title: "About | NexusAI",
@@ -97,6 +98,7 @@ export default function About() {
                     </Magnetic>
                 </div>
             </main>
+            <Footer />
         </div>
     );
 }

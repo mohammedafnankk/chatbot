@@ -45,7 +45,7 @@ const ChatMessage = ({ role, content, isTyping }: ChatMessageProps) => {
       {/* Avatar */}
       <div
         className={cn(
-          "w-9 h-9 rounded-lg flex items-center justify-center shrink-0 mt-1",
+          "w-9 h-9 rounded-lg flex items-center justify-center shrink-0 mt-1 max-sm:hidden",
           isUser ? "bg-user-bubble" : "bg-primary/10 border border-primary/20"
         )}
       >
@@ -59,7 +59,7 @@ const ChatMessage = ({ role, content, isTyping }: ChatMessageProps) => {
       {/* Message */}
       <div
         className={cn(
-          "max-w-[85%] sm:max-w-[80%] rounded-2xl px-5 py-4",
+          "max-w-full sm:max-w-[80%] rounded-2xl px-5 max-sm:px-1 py-4",
           isUser
             ? "bg-user-bubble text-user-bubble-foreground rounded-br-md"
             : "text-foreground w-full bg-ai-bubble/20 rounded-bl-md"
