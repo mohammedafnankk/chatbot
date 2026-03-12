@@ -10,7 +10,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 export function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
-    const texts = ["BotixAI", "Powered by Advanced AI", "Natural Conversations", "Lightning Fast", "Always Learning"];
+    const texts = ["XenbotAI", "Powered by Advanced AI", "Natural Conversations", "Lightning Fast", "Always Learning"];
 
     const navLinks = [
         { name: "Home", href: "/" },

@@ -82,7 +82,7 @@ export default function AuthPage() {
       toast.error("Authentication failed");
     }
   };
-  const texts = ["BotixAI", "Powered by Advanced AI", "Natural Conversations", "Lightning Fast", "Always Learning"]
+  const texts = ["XenbotAI", "Powered by Advanced AI", "Natural Conversations", "Lightning Fast", "Always Learning"]
   const texts2 = ["Powered by Advanced AI"]
   return (
     <main className="min-h-screen">
@@ -134,7 +134,7 @@ export default function AuthPage() {
               <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center">
                 <Bot className="w-6 h-6 text-primary" />
               </div>
-              <span className="text-xl font-bold gradient-text">BotixAI</span>
+              <span className="text-xl font-bold gradient-text">XenbotAI</span>
             </div>
 
             <div className="glass rounded-2xl p-8 shadow-card">

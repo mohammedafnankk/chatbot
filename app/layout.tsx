@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "BotixAI",
+  title: "XenbotAI",
   description: "Powered by Advanced AI",
 };
 

@@ -9,7 +9,7 @@ export function Footer() {
                     <div className="space-y-4">
                         <div className="flex items-center gap-2">
                             <Bot className="w-6 h-6 text-primary" />
-                            <span className="text-xl font-bold text-foreground">BotixAI</span>
+                            <span className="text-xl font-bold text-foreground">XenbotAI</span>
                         </div>
                         <p className="text-muted-foreground text-sm">
                             The future of conversational AI. Intelligent, intuitive, and designed to understand you.
@@ -73,7 +73,7 @@ export function Footer() {
                 </div>
                 <div className="mt-12 text-center border-t border-border pt-8 flex justify-between max-sm:flex-col gap-2 items-center">
                     <p className="text-muted-foreground text-sm">
-                        &copy; {new Date().getFullYear()} BotixAI. All rights reserved.
+                        &copy; {new Date().getFullYear()} XenbotAI. All rights reserved.
                     </p>
                     <div className="flex items-center justify-between gap-4">
                         <a href="https://mhd-afnan.vercel.app/" target="_blank" className="text-muted-foreground hover:text-primary transition-colors text-sm">
