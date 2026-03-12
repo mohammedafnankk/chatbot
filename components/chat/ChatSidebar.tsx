@@ -35,7 +35,7 @@ const ChatSidebar = ({
           <div className="w-9 h-9 rounded-lg bg-primary/20 flex items-center justify-center">
             <Bot className="w-5 h-5 text-primary" />
           </div>
-          <span className="font-semibold text-foreground">NexusAI</span>
+          <span className="font-semibold text-foreground">BotixAI</span>
         </div>
 
         <Button
@@ -62,8 +62,8 @@ const ChatSidebar = ({
             <div
               key={conv.id}
               className={`w-full text-left p-3 rounded-lg transition-all duration-200 group flex items-center gap-2 ${activeId === conv.id
-                  ? "bg-sidebar-accent text-sidebar-accent-foreground"
-                  : "text-muted-foreground hover:bg-sidebar-accent/50 hover:text-foreground"
+                ? "bg-sidebar-accent text-sidebar-accent-foreground"
+                : "text-muted-foreground hover:bg-sidebar-accent/50 hover:text-foreground"
                 }`}
             >
               <button

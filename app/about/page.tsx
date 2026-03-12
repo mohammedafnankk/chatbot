@@ -9,8 +9,8 @@ import { Metadata } from "next";
 import { Footer } from "@/components/layout/Footer";
 
 export const metadata: Metadata = {
-    title: "About | NexusAI",
-    description: "Learn about NexusAI, our mission to redefine human-AI interaction, and our commitment to responsible AI.",
+    title: "About | BotixAI",
+    description: "Learn about BotixAI, our mission to redefine human-AI interaction, and our commitment to responsible AI.",
 };
 
 export default function About() {
@@ -31,7 +31,7 @@ export default function About() {
                     <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-8">
                         <Bot className="w-4 h-4" />
                         <GlitchText
-                            words={["About NexusAI"]}
+                            words={["About BotixAI"]}
                             className="text-sm font-medium"
                         />
                     </div>
@@ -86,7 +86,7 @@ export default function About() {
                 <div className="mt-32 max-w-4xl mx-auto text-center glass rounded-3xl p-12">
                     <h2 className="text-3xl font-bold text-white mb-6">Join Us on this Journey</h2>
                     <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-                        Experience the power of NexusAI today and see how we can transform the way you work and communicate.
+                        Experience the power of BotixAI today and see how we can transform the way you work and communicate.
                     </p>
                     <Magnetic>
                         <Link href="/auth">

@@ -12,12 +12,12 @@ import { Metadata } from "next";
 import { Footer } from "@/components/layout/Footer";
 
 export const metadata: Metadata = {
-  title: "NexusAI - The Future of Conversations",
+  title: "BotixAI - The Future of Conversations",
   description: "Experience the next generation of AI-powered conversations. Smart, intuitive, and designed to understand you.",
 };
 
 export default function Home() {
-  const texts = ["NexusAI", "Powered by Advanced AI", "Natural Conversations", "Lightning Fast", "Always Learning"]
+  const texts = ["BotixAI", "Powered by Advanced AI", "Natural Conversations", "Lightning Fast", "Always Learning"]
   const texts2 = ["Powered by Advanced AI"]
   return (
     <div className="min-h-screen bg-background overflow-hidden">
@@ -117,7 +117,7 @@ export default function Home() {
           ))}
         </div>
       </main>
-        <Footer />
+      <Footer />
     </div>
   );
 }

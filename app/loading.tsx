@@ -47,7 +47,7 @@ export default function Loading() {
           className="flex flex-col items-center gap-2"
         >
           <span className="text-xl font-bold tracking-tight text-foreground">
-            Nexus<span className="text-primary">AI</span>
+            Botix<span className="text-primary">AI</span>
           </span>
           <div className="flex gap-1">
             {[0, 1, 2].map((i) => (

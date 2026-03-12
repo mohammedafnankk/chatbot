@@ -7,8 +7,8 @@ import { Metadata } from "next";
 import { Footer } from "@/components/layout/Footer";
 
 export const metadata: Metadata = {
-    title: "Contact | NexusAI",
-    description: "Get in touch with the NexusAI team. We're here to answer your questions and explore partnerships.",
+    title: "Contact | BotixAI",
+    description: "Get in touch with the BotixAI team. We're here to answer your questions and explore partnerships.",
 };
 
 export default function Contact() {
@@ -39,7 +39,7 @@ export default function Contact() {
                     </h1>
 
                     <p className="text-xl text-muted-foreground mt-6 max-w-2xl mx-auto">
-                        Have questions about NexusAI? Interested in partnering with us? We'd love to hear from you.
+                        Have questions about BotixAI? Interested in partnering with us? We'd love to hear from you.
                     </p>
                 </div>
 

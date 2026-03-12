@@ -17,7 +17,7 @@ export async function POST(request: Request) {
             from: process.env.EMAIL_USER,
             to: process.env.EMAIL_USER, // Send the email to yourself
             replyTo: email,
-            subject: subject || `New Nexus AI contact message from ${name}`,
+            subject: subject || `New Botix AI contact message from ${name}`,
             text: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
             html: `
         <h3>New Contact Message</h3>
