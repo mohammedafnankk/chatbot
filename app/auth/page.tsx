@@ -95,13 +95,15 @@ export default function AuthPage() {
 
           <div className="relative z-10 flex flex-col justify-center px-16">
             <div className="flex items-center gap-3 mb-8">
+              <Link href="/" className="flex items-center gap-3 cursor-pointer">
               <div className="w-12 h-12 rounded-xl bg-primary/20 flex items-center justify-center">
                 <Bot className="w-7 h-7 text-primary" />
               </div>
               <CharacterMorph
                 texts={texts}
                 className="text-xl font-bold text-primary"
-              />
+                />
+                </Link>
             </div>
 
             <h1 className="text-5xl font-bold text-foreground mb-6 leading-tight">
