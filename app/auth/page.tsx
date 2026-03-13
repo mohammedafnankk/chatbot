@@ -226,12 +226,12 @@ export default function AuthPage() {
 
                 {isLogin && (
                   <div className="flex justify-end">
-                    <button
-                      type="button"
+                    <Link
+                      href="/auth/forgot-password"
                       className="text-sm text-primary hover:text-primary/80 transition-colors"
                     >
                       Forgot password?
-                    </button>
+                    </Link>
                   </div>
                 )}
                 <Magnetic>
